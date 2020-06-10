@@ -1,0 +1,3 @@
+variable "dependencies" {
+  type = "list"
+}
