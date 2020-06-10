@@ -26,7 +26,19 @@ resource "null_resource" "starboard_init" {
   }
 
   provisioner "local-exec" {
-    command = "kubectl apply -f ${"${path.module}/config/starboard/*.yaml"}"
+    command = "kubectl apply -f ${"${path.module}/config/starboard/ciskubebenchreports-crd.yaml"}"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f ${"${path.module}/config/starboard/configauditreports-crd.yaml"}"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f ${"${path.module}/config/starboard/kubehunterreports-crd.yaml"}"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f ${"${path.module}/config/starboard/vulnerabilities-crd.yaml"}"
   }
 
   depends_on = [
