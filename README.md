@@ -22,7 +22,7 @@ The following security controls can be met through configuration of this templat
 
 ```terraform
 module "kubectl_aquasecurity" {
-  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=20200610.2"
+  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=20200611.1"
 
   dependencies = [
     "${module.namespace_starboard.depended_on}",
