@@ -46,6 +46,25 @@ resource "null_resource" "starboard_init" {
   ]
 }
 
+resource "null_resource" "starboard_cronjob" {
+  triggers = {
+    hash_cronjob_kubebench = filesha256("${path.module}/config/cronjob/kube-bench.yaml"),
+    hash_cronjob_kubehunter = filesha256("${path.module}/config/cronjob/kube-hunter.yaml")
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl -n ${var.kubectl_namespace} apply -f ${"${path.module}/config/cronjob/kube-bench.yaml"}"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl -n ${var.kubectl_namespace} apply -f ${"${path.module}/config/cronjob/kube-hunter.yaml"}"
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
 # Part of a hack for module-to-module dependencies.
 # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
 resource "null_resource" "dependency_setter" {

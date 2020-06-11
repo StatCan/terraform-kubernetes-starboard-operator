@@ -1,0 +1,25 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: starboard-kube-bench
+spec:
+  concurrencyPolicy: Replace
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  startingDeadlineSeconds: 60
+  schedule: "0 4 * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app: starboard-kube-bench
+        spec:
+          containers:
+          - name: starboard
+            imagePullPolicy: Always
+            image: statcan/starboard:v0.0.1
+            command: ["starboard"]
+            args: ["kube-bench", "-v3"]
+          restartPolicy: Never

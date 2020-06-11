@@ -24,7 +24,11 @@ The following security controls can be met through configuration of this templat
 module "kubectl_aquasecurity" {
   source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=20200610.2"
 
-  dependencies = []
+  dependencies = [
+    "${module.namespace_starboard.depended_on}",
+  ]
+
+  kubectl_namespace = "${module.namespace_starboard.name}"
 }
 ```
 
@@ -33,6 +37,7 @@ module "kubectl_aquasecurity" {
 | Name                    | Type   | Required | Value                                                  |
 | ----------------------- | ------ | -------- | ------------------------------------------------------ |
 | dependencies            | list   | yes      | Dependency name refering to namespace module           |
+| kubectl_namespace       | list   | yes      | The namespace kubectl will install the manifests under |
 
 ## History
 
