@@ -46,6 +46,78 @@ resource "null_resource" "starboard_init" {
   ]
 }
 
+resource "kubernetes_cluster_role_binding" "starboard" {
+  metadata {
+    name = "starboard-cluster-users"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "starboard-cluster-role"
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = "default"
+    namespace = "starboard"
+  }
+}
+
+resource "kubernetes_cluster_role" "starboard-cluster-users" {
+  metadata {
+    name = "starboard-cluster-role"
+  }
+
+  # Read / Write access to starboard
+  rule {
+    api_groups = ["aquasecurity.github.io"]
+    resources  = ["*"]
+    verbs      = ["create", "list", "get", "watch"]
+  }
+
+  # Read-only access to namespaces and nodes
+  rule {
+    api_groups = [""]
+    resources  = ["namespaces", "nodes"]
+    verbs      = ["list", "get", "watch"]
+  }
+}
+
+resource "kubernetes_role_binding" "starboard" {
+  metadata {
+    name      = "starboard-users"
+    namespace = "starboard"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = "starboard-role"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "default"
+    namespace = "starboard"
+  }
+}
+
+resource "kubernetes_role" "starboard-users" {
+  metadata {
+    name      = "starboard-role"
+    namespace = "starboard"
+  }
+  rule {
+    api_groups = [""]
+    resources  = ["services", "pods", "pods/log"]
+    verbs      = ["get", "list"]
+  }
+  rule {
+    api_groups = ["batch"]
+    resources  = ["jobs"]
+    verbs      = ["*"]
+  }
+}
+
 resource "null_resource" "starboard_cronjob" {
   triggers = {
     hash_cronjob_kubebench = filesha256("${path.module}/config/cronjob/kube-bench.yaml"),

@@ -45,4 +45,5 @@ module "kubectl_aquasecurity" {
 | -------- | ---------- | ---------------------------------------------------------- |
 | 20200610 | 20200610.1 | 1st release                                                |
 | 20200610 | 20200610.2 | Split out files                                            |
-| 20200610 | 20200611.1 | Add default cronjob                                        |
+| 20200611 | 20200611.1 | Add default cronjob                                        |
+| 20200612 | 20200612.1 | Add default RBAC                                           |
