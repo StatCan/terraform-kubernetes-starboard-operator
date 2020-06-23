@@ -73,7 +73,7 @@ resource "kubernetes_cluster_role" "starboard-cluster-users" {
   rule {
     api_groups = ["aquasecurity.github.io"]
     resources  = ["*"]
-    verbs      = ["create", "list", "get", "watch"]
+    verbs      = ["create", "list", "update", "get", "watch"]
   }
 
   # Read-only access to namespaces and nodes
