@@ -22,7 +22,7 @@ The following security controls can be met through configuration of this templat
 
 ```terraform
 module "kubectl_aquasecurity" {
-  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=20200611.1"
+  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=v1.0.0"
 
   dependencies = [
     "${module.namespace_starboard.depended_on}",
@@ -43,7 +43,4 @@ module "kubectl_aquasecurity" {
 
 | Date     | Release    | Change                                                     |
 | -------- | ---------- | ---------------------------------------------------------- |
-| 20200610 | 20200610.1 | 1st release                                                |
-| 20200610 | 20200610.2 | Split out files                                            |
-| 20200611 | 20200611.1 | Add default cronjob                                        |
-| 20200612 | 20200612.1 | Add default RBAC                                           |
+| 20200825 | v1.0.0     | Default of Kubebench                                       |

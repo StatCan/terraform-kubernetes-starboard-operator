@@ -19,7 +19,7 @@ spec:
           containers:
           - name: starboard
             imagePullPolicy: Always
-            image: statcan/starboard:v0.0.1
+            image: statcan/starboard:v0.2.6
             command: ["starboard"]
             args: ["kube-hunter", "-v3"]
           restartPolicy: Never

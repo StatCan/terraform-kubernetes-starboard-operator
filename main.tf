@@ -121,15 +121,10 @@ resource "kubernetes_role" "starboard-users" {
 resource "null_resource" "starboard_cronjob" {
   triggers = {
     hash_cronjob_kubebench = filesha256("${path.module}/config/cronjob/kube-bench.yaml"),
-    hash_cronjob_kubehunter = filesha256("${path.module}/config/cronjob/kube-hunter.yaml")
   }
 
   provisioner "local-exec" {
     command = "kubectl -n ${var.kubectl_namespace} apply -f ${"${path.module}/config/cronjob/kube-bench.yaml"}"
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl -n ${var.kubectl_namespace} apply -f ${"${path.module}/config/cronjob/kube-hunter.yaml"}"
   }
 
   depends_on = [
