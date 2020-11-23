@@ -17,118 +17,20 @@ resource "null_resource" "dependency_getter" {
   }
 }
 
-resource "null_resource" "starboard_init" {
-  triggers = {
-    hash_kubebench = filesha256("${path.module}/config/starboard/ciskubebenchreports-crd.yaml"),
-    hash_configaudit = filesha256("${path.module}/config/starboard/configauditreports-crd.yaml"),
-    hash_kubehunter = filesha256("${path.module}/config/starboard/kubehunterreports-crd.yaml"),
-    hash_vulnerabilities = filesha256("${path.module}/config/starboard/vulnerabilities-crd.yaml")
-  }
+resource "helm_release" "starboard-operator" {
+  depends_on = [null_resource.dependency_getter]
+  name       = "starboard-operator"
 
-  provisioner "local-exec" {
-    command = "kubectl apply -f ${"${path.module}/config/starboard/ciskubebenchreports-crd.yaml"}"
-  }
+  repository          = var.helm_repository
+  repository_username = var.helm_repository_username
+  repository_password = var.helm_repository_password
 
-  provisioner "local-exec" {
-    command = "kubectl apply -f ${"${path.module}/config/starboard/configauditreports-crd.yaml"}"
-  }
+  chart     = var.chart_name
+  version   = var.chart_version
+  namespace = var.helm_namespace
 
-  provisioner "local-exec" {
-    command = "kubectl apply -f ${"${path.module}/config/starboard/kubehunterreports-crd.yaml"}"
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl apply -f ${"${path.module}/config/starboard/vulnerabilities-crd.yaml"}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_cluster_role_binding" "starboard" {
-  metadata {
-    name = "starboard-cluster-users"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "starboard-cluster-role"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = "default"
-    namespace = "starboard"
-  }
-}
-
-resource "kubernetes_cluster_role" "starboard-cluster-users" {
-  metadata {
-    name = "starboard-cluster-role"
-  }
-
-  # Read / Write access to starboard
-  rule {
-    api_groups = ["aquasecurity.github.io"]
-    resources  = ["*"]
-    verbs      = ["create", "list", "update", "get", "watch"]
-  }
-
-  # Read-only access to namespaces and nodes
-  rule {
-    api_groups = [""]
-    resources  = ["namespaces", "nodes"]
-    verbs      = ["list", "get", "watch"]
-  }
-}
-
-resource "kubernetes_role_binding" "starboard" {
-  metadata {
-    name      = "starboard-users"
-    namespace = "starboard"
-  }
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = "starboard-role"
-  }
-  subject {
-    kind      = "ServiceAccount"
-    name      = "default"
-    namespace = "starboard"
-  }
-}
-
-resource "kubernetes_role" "starboard-users" {
-  metadata {
-    name      = "starboard-role"
-    namespace = "starboard"
-  }
-  rule {
-    api_groups = [""]
-    resources  = ["services", "pods", "pods/log"]
-    verbs      = ["get", "list"]
-  }
-  rule {
-    api_groups = ["batch"]
-    resources  = ["jobs"]
-    verbs      = ["*"]
-  }
-}
-
-resource "null_resource" "starboard_cronjob" {
-  triggers = {
-    hash_cronjob_kubebench = filesha256("${path.module}/config/cronjob/kube-bench.yaml"),
-  }
-
-  provisioner "local-exec" {
-    command = "kubectl -n ${var.kubectl_namespace} apply -f ${"${path.module}/config/cronjob/kube-bench.yaml"}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
+  values = [
+    var.values,
   ]
 }
 

@@ -22,13 +22,13 @@ The following security controls can be met through configuration of this templat
 
 ```terraform
 module "kubectl_aquasecurity" {
-  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=v1.0.0"
+  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-aquasecurity?ref=v2.0.0"
 
   dependencies = [
-    "${module.namespace_starboard.depended_on}",
+    module.namespace_starboard_operator.depended_on,
   ]
 
-  kubectl_namespace = "${module.namespace_starboard.name}"
+  helm_namespace = kubernetes_namespace.starboard_operator.name
 }
 ```
 
@@ -43,4 +43,5 @@ module "kubectl_aquasecurity" {
 
 | Date     | Release    | Change                                                     |
 | -------- | ---------- | ---------------------------------------------------------- |
-| 20200825 | v1.0.0     | Default of Kubebench                                       |
+| 20200825 | v1.0.0     | Default of Starboard                                       |
+| 20201123 | v2.0.0     | Switch to Starboard Operator w/ Helm Chart                 |
