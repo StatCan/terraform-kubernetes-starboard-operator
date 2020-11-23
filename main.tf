@@ -54,6 +54,7 @@ resource "kubernetes_cron_job" "kube_bench" {
         template {
           metadata {}
           spec {
+            automount_service_account_token = true
             container {
               name    = "starboard"
               image   = "aquasec/starboard:0.6.0"
