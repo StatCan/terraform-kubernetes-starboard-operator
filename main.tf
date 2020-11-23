@@ -48,9 +48,11 @@ resource "kubernetes_cron_job" "kube_bench" {
     schedule                      = "0 4 * * *"
 
     job_template {
+      metadata {}
       spec {
         backoff_limit = 0
         template {
+          metadata {}
           spec {
             container {
               name    = "starboard"
