@@ -62,7 +62,7 @@ resource "kubernetes_cron_job" "kube_bench" {
               name    = "starboard"
               image   = "aquasec/starboard:0.6.0"
               command = ["starboard"]
-              args    = ["kube-bench", "-v3"]
+              args    = ["kube-bench", "-v3", "--scan-job-timeout=120s"]
             }
             restart_policy = "Never"
           }
