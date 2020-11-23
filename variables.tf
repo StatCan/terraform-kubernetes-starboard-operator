@@ -22,10 +22,13 @@ variable "chart_version" {
 }
 
 variable "dependencies" {
-  type = "list"
+  type = list(any)
 }
 
 variable "values" {
   default = ""
-  type    = "string"
+}
+
+variable "starboard_namespace" {
+  default = "starboard"
 }
