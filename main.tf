@@ -57,7 +57,7 @@ resource "kubernetes_cron_job" "kube_bench" {
           metadata {}
           spec {
             automount_service_account_token = true
-            service_account_name = kubernetes_service_account.starboard.metadata.0.name
+            service_account_name            = kubernetes_service_account.starboard.metadata.0.name
             container {
               name    = "starboard"
               image   = "aquasec/starboard:0.6.0"
@@ -161,7 +161,7 @@ resource "kubernetes_role_binding" "starboard" {
 
 resource "kubernetes_config_map" "starboard" {
   depends_on = [null_resource.dependency_getter]
-  
+
   metadata {
     name      = "starboard"
     namespace = var.starboard_namespace
