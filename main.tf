@@ -34,6 +34,38 @@ resource "helm_release" "starboard_operator" {
   ]
 }
 
+resource "kubernetes_cron_job" "kube_bench" {
+  metadata {
+    name      = "kube-bench"
+    namespace = var.helm_namespace
+  }
+
+  spec {
+    concurrency_policy            = "Replace"
+    successful_jobs_history_limit = 3
+    failed_jobs_history_limit     = 3
+    starting_deadline_seconds     = 60
+    schedule                      = "0 4 * * *"
+
+    job_template {
+      spec {
+        backoff_limit = 0
+        template {
+          spec {
+            container {
+              name    = "starboard"
+              image   = "aquasec/starboard:0.6.0"
+              command = ["starboard"]
+              args    = ["kube-bench", "-v3"]
+            }
+            restart_policy = "Never"
+          }
+        }
+      }
+    }
+  }
+}
+
 # Part of a hack for module-to-module dependencies.
 # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
 resource "null_resource" "dependency_setter" {
