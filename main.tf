@@ -97,6 +97,12 @@ resource "kubernetes_cluster_role" "starboard" {
   }
 
   rule {
+    api_groups = ["batch"]
+    resources  = ["jobs"]
+    verbs      = ["create", "get", "list", "watch", "update"]
+  }
+
+  rule {
     api_groups = [""]
     resources  = ["nodes"]
     verbs      = ["list", "get", "watch"]
