@@ -18,7 +18,7 @@ variable "chart_name" {
 }
 
 variable "chart_version" {
-  default = "0.1.0"
+  default = "0.3.0"
 }
 
 variable "dependencies" {

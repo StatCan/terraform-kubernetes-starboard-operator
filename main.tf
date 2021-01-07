@@ -60,7 +60,7 @@ resource "kubernetes_cron_job" "kube_bench" {
             service_account_name            = kubernetes_service_account.starboard.metadata.0.name
             container {
               name    = "starboard"
-              image   = "aquasec/starboard:0.6.0"
+              image   = "aquasec/starboard:0.8.0"
               command = ["starboard"]
               args    = ["kube-bench", "-v3", "--scan-job-timeout=120s"]
             }
