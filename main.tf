@@ -175,7 +175,7 @@ resource "kubernetes_config_map" "starboard" {
 
   data = {
     "trivy.severity"      = "CRITICAL"
-    "trivy.imageRef"      = "docker.io/aquasec/trivy:0.12.0"
+    "trivy.imageRef"      = "docker.io/aquasec/trivy:0.15.0"
     "trivy.mode"          = "Standalone"
     "trivy.serverURL"     = "http://trivy-server.trivy-server:4954"
     "kube-bench.imageRef" = "docker.io/aquasec/kube-bench:0.4.0"
