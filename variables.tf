@@ -39,5 +39,17 @@ variable "image_pull_secrets" {
 }
 
 variable "image_registry" {
-  default = "docker.io/"
+  default = "docker.io"
+}
+
+variable "trivy_mode" {
+  default = "Standalone"
+}
+
+variable "trivy_server_url" {
+  default = "http://trivy-server.trivy-server:4954"
+}
+
+variable "trivy_severity" {
+  default = "CRITICAL"
 }
