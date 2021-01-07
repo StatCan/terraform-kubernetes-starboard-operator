@@ -32,3 +32,12 @@ variable "values" {
 variable "starboard_namespace" {
   default = "starboard"
 }
+
+variable "image_pull_secrets" {
+  type    = list(string)
+  default = []
+}
+
+variable "image_registry" {
+  default = "docker.io/"
+}

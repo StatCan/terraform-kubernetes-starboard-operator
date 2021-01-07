@@ -81,6 +81,13 @@ resource "kubernetes_service_account" "starboard" {
   }
 
   automount_service_account_token = true
+
+  dynamic "image_pull_secret" {
+    for_each = var.image_pull_secrets
+    contents {
+      name = image_pull_secret.value
+    }
+  }
 }
 
 resource "kubernetes_cluster_role" "starboard" {
@@ -175,14 +182,14 @@ resource "kubernetes_config_map" "starboard" {
 
   data = {
     "vulnerabilityReports.scanner" = "Trivy"
-    "trivy.severity"               = "CRITICAL"
-    "trivy.imageRef"               = "docker.io/aquasec/trivy:0.15.0"
-    "trivy.mode"                   = "Standalone"
-    "trivy.serverURL"              = "http://trivy-server.trivy-server:4954"
+    "trivy.severity"               = var.trivy_severity
+    "trivy.imageRef"               = "${var.image_registry}/aquasec/trivy:0.15.0"
+    "trivy.mode"                   = var.trivy_mode
+    "trivy.serverURL"              = var.trivy_server_url
     "trivy.serverTokenHeader"      = "Trivy-Token"
-    "aqua.imageRef"                = "docker.io/aquasec/scanner:5.3"
-    "kube-bench.imageRef"          = "docker.io/aquasec/kube-bench:0.4.0"
-    "kube-hunter.imageRef"         = "docker.io/aquasec/kube-hunter:0.4.0"
+    "aqua.imageRef"                = "${var.image_registry}/aquasec/scanner:5.3"
+    "kube-bench.imageRef"          = "${var.image_registry}/aquasec/kube-bench:0.4.0"
+    "kube-hunter.imageRef"         = "${var.image_registry}/aquasec/kube-hunter:0.4.0"
   }
 }
 
@@ -196,14 +203,14 @@ resource "kubernetes_config_map" "starboard_operator" {
 
   data = {
     "vulnerabilityReports.scanner" = "Trivy"
-    "trivy.severity"               = "CRITICAL"
-    "trivy.imageRef"               = "docker.io/aquasec/trivy:0.15.0"
-    "trivy.mode"                   = "Standalone"
-    "trivy.serverURL"              = "http://trivy-server.trivy-server:4954"
+    "trivy.severity"               = var.trivy_severity
+    "trivy.imageRef"               = "${var.image_registry}/aquasec/trivy:0.15.0"
+    "trivy.mode"                   = var.trivy_mode
+    "trivy.serverURL"              = var.trivy_server_url
     "trivy.serverTokenHeader"      = "Trivy-Token"
-    "aqua.imageRef"                = "docker.io/aquasec/scanner:5.3"
-    "kube-bench.imageRef"          = "docker.io/aquasec/kube-bench:0.4.0"
-    "kube-hunter.imageRef"         = "docker.io/aquasec/kube-hunter:0.4.0"
+    "aqua.imageRef"                = "${var.image_registry}/aquasec/scanner:5.3"
+    "kube-bench.imageRef"          = "${var.image_registry}/aquasec/kube-bench:0.4.0"
+    "kube-hunter.imageRef"         = "${var.image_registry}/aquasec/kube-hunter:0.4.0"
   }
 }
 
