@@ -21,7 +21,7 @@ resource "kubernetes_service_account" "starboard_operator" {
   depends_on = [null_resource.dependency_getter]
 
   metadata {
-    name      = "starboard"
+    name      = "starboard-operator"
     namespace = var.helm_namespace
   }
 
