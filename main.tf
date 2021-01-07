@@ -29,7 +29,7 @@ resource "kubernetes_service_account" "starboard_operator" {
 
   dynamic "image_pull_secret" {
     for_each = var.image_pull_secrets
-    contents {
+    content {
       name = image_pull_secret.value
     }
   }
@@ -112,7 +112,7 @@ resource "kubernetes_service_account" "starboard" {
 
   dynamic "image_pull_secret" {
     for_each = var.image_pull_secrets
-    contents {
+    content {
       name = image_pull_secret.value
     }
   }
