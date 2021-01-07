@@ -17,6 +17,24 @@ resource "null_resource" "dependency_getter" {
   }
 }
 
+resource "kubernetes_service_account" "starboard_operator" {
+  depends_on = [null_resource.dependency_getter]
+
+  metadata {
+    name      = "starboard"
+    namespace = var.helm_namespace
+  }
+
+  automount_service_account_token = true
+
+  dynamic "image_pull_secret" {
+    for_each = var.image_pull_secrets
+    contents {
+      name = image_pull_secret.value
+    }
+  }
+}
+
 resource "helm_release" "starboard_operator" {
   depends_on = [null_resource.dependency_getter]
   name       = "starboard-operator"
@@ -28,6 +46,16 @@ resource "helm_release" "starboard_operator" {
   chart     = var.chart_name
   version   = var.chart_version
   namespace = var.helm_namespace
+
+  set {
+    name = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name = "serviceAccount.name"
+    value = kubernetes_service_account.starboard_operator.metadata.0.name
+  }
 
   values = [
     var.values,
