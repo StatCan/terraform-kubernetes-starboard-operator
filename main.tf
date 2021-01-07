@@ -174,11 +174,15 @@ resource "kubernetes_config_map" "starboard" {
   }
 
   data = {
-    "trivy.severity"      = "CRITICAL"
-    "trivy.imageRef"      = "docker.io/aquasec/trivy:0.15.0"
-    "trivy.mode"          = "Standalone"
-    "trivy.serverURL"     = "http://trivy-server.trivy-server:4954"
-    "kube-bench.imageRef" = "docker.io/aquasec/kube-bench:0.4.0"
+    "vulnerabilityReports.scanner" = "Trivy"
+    "trivy.severity"               = "CRITICAL"
+    "trivy.imageRef"               = "docker.io/aquasec/trivy:0.15.0"
+    "trivy.mode"                   = "Standalone"
+    "trivy.serverURL"              = "http://trivy-server.trivy-server:4954"
+    "trivy.serverTokenHeader"      = "Trivy-Token"
+    "aqua.imageRef"                = "docker.io/aquasec/scanner:5.3"
+    "kube-bench.imageRef"          = "docker.io/aquasec/kube-bench:0.4.0"
+    "kube-hunter.imageRef"         = "docker.io/aquasec/kube-hunter:0.4.0"
   }
 }
 
@@ -191,11 +195,15 @@ resource "kubernetes_config_map" "starboard_operator" {
   }
 
   data = {
-    "trivy.severity"      = "CRITICAL"
-    "trivy.imageRef"      = "docker.io/aquasec/trivy:0.15.0"
-    "trivy.mode"          = "Standalone"
-    "trivy.serverURL"     = "http://trivy-server.trivy-server:4954"
-    "kube-bench.imageRef" = "docker.io/aquasec/kube-bench:0.4.0"
+    "vulnerabilityReports.scanner" = "Trivy"
+    "trivy.severity"               = "CRITICAL"
+    "trivy.imageRef"               = "docker.io/aquasec/trivy:0.15.0"
+    "trivy.mode"                   = "Standalone"
+    "trivy.serverURL"              = "http://trivy-server.trivy-server:4954"
+    "trivy.serverTokenHeader"      = "Trivy-Token"
+    "aqua.imageRef"                = "docker.io/aquasec/scanner:5.3"
+    "kube-bench.imageRef"          = "docker.io/aquasec/kube-bench:0.4.0"
+    "kube-hunter.imageRef"         = "docker.io/aquasec/kube-hunter:0.4.0"
   }
 }
 
