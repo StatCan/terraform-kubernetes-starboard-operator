@@ -182,6 +182,23 @@ resource "kubernetes_config_map" "starboard" {
   }
 }
 
+resource "kubernetes_config_map" "starboard_operator" {
+  depends_on = [null_resource.dependency_getter]
+
+  metadata {
+    name      = "starboard"
+    namespace = var.helm_namespace
+  }
+
+  data = {
+    "trivy.severity"      = "CRITICAL"
+    "trivy.imageRef"      = "docker.io/aquasec/trivy:0.15.0"
+    "trivy.mode"          = "Standalone"
+    "trivy.serverURL"     = "http://trivy-server.trivy-server:4954"
+    "kube-bench.imageRef" = "docker.io/aquasec/kube-bench:0.4.0"
+  }
+}
+
 # Part of a hack for module-to-module dependencies.
 # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
 resource "null_resource" "dependency_setter" {
