@@ -174,7 +174,7 @@ resource "kubernetes_role" "starboard" {
 
   rule {
     api_groups = [""]
-    resources  = ["configmaps", "pods", "pods/log"]
+    resources  = ["configmaps", "pods", "pods/log", "secrets"]
     verbs      = ["list", "get", "watch"]
   }
 }
@@ -240,6 +240,17 @@ resource "kubernetes_config_map" "starboard_operator" {
     "kube-bench.imageRef"          = "${var.image_registry}/aquasec/kube-bench:0.4.0"
     "kube-hunter.imageRef"         = "${var.image_registry}/aquasec/kube-hunter:0.4.0"
   }
+}
+
+resource "kubernetes_secret" "starboard" {
+  depends_on = [null_resource.dependency_getter]
+
+  metadata {
+    name      = "starboard"
+    namespace = var.starboard_namespace
+  }
+
+  type = "Opaque"
 }
 
 # Part of a hack for module-to-module dependencies.
