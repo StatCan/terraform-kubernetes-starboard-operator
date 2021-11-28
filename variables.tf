@@ -3,7 +3,7 @@ variable "helm_namespace" {
 }
 
 variable "helm_repository" {
-  default = "https://statcan.github.io/charts"
+  default = "https://aquasecurity.github.io/helm-charts/"
 }
 
 variable "helm_repository_password" {
@@ -18,19 +18,11 @@ variable "chart_name" {
 }
 
 variable "chart_version" {
-  default = "0.3.0"
+  default = "0.8.0"
 }
 
-variable "dependencies" {
-  type = list(any)
-}
-
-variable "values" {
-  default = ""
-}
-
-variable "starboard_namespace" {
-  default = "starboard"
+variable "cron_job_suspend" {
+  default = "false"
 }
 
 variable "image_pull_secrets" {
@@ -40,6 +32,14 @@ variable "image_pull_secrets" {
 
 variable "image_registry" {
   default = "docker.io"
+}
+
+variable "image_tag" {
+  default = "0.8.0"
+}
+
+variable "starboard_namespace" {
+  default = "starboard-system"
 }
 
 variable "trivy_mode" {
@@ -52,4 +52,12 @@ variable "trivy_server_url" {
 
 variable "trivy_severity" {
   default = "CRITICAL"
+}
+
+variable "server_token_header" {
+  default = ""
+}
+
+variable "values" {
+  default = ""
 }
