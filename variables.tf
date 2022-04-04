@@ -18,7 +18,7 @@ variable "chart_name" {
 }
 
 variable "chart_version" {
-  default = "0.15.1"
+  default = "0.10.1"
 }
 
 variable "cron_job_suspend" {
@@ -35,7 +35,7 @@ variable "image_registry" {
 }
 
 variable "image_tag" {
-  default = "0.8.0"
+  default = "0.15.1"
 }
 
 variable "starboard_namespace" {
