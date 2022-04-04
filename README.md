@@ -70,6 +70,7 @@ EOF
 
 | Date     | Release | Change                                     |
 | -------- | ------- | ------------------------------------------ |
+| 20220404 | v4.0.0  | Move to official Helm Chart                |
 | 20211128 | v3.0.0  | Better integration with Helm Chart         |
 | 20201123 | v2.0.0  | Switch to Starboard Operator w/ Helm Chart |
 | 20200825 | v1.0.0  | Default of Starboard                       |

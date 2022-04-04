@@ -65,6 +65,11 @@ resource "helm_release" "starboard_operator" {
 
   set {
     name  = "operator.configAuditScannerEnabled"
+    value = "false"
+  }
+
+  set {
+    name  = "operator.configAuditScannerBuiltIn"
     value = "true"
   }
 
