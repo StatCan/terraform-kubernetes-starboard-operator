@@ -70,6 +70,7 @@ EOF
 
 | Date     | Release | Change                                     |
 | -------- | ------- | ------------------------------------------ |
+| 20230203 | v4.0.2  | Specify sensitive variables                |
 | 20220404 | v4.0.1  | Move to official Helm Chart                |
 | 20220404 | v4.0.0  | Move to official Helm Chart                |
 | 20211128 | v3.0.0  | Better integration with Helm Chart         |
